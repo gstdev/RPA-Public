@@ -9,3 +9,17 @@ Client needed hundreds of Word documents (.doc and .docx) converted to PDF forma
 
 # How can we utilize technology and avoid many hours of tedious work?  Let's see if this is a good fit for Robotic Process Automation (RPA)
 We have been interested in RPA for over a year now and spent some time with UiPath but didn't have an actual use case to do a proof of concept.  Currently the three RPA marketplace leaders are <a href="https://www.uipath.com" target="_blank">UiPath</a>, <a href="https://www.automationanywhere.com/" target="_blank">Automation Anywhere</a>, and <a href="https://www.blueprism.com" target="_blank">Blue Prism</a>.  We decided to use UiPath since they offer a free <a href="https://www.uipath.com/developers/community-edition-download" target="_blank">Community Edition</a>.
+
+# Project Setup
+* Install UiPath Studio
+* Clone git repository
+* Open up UiPath Studio
+* Add/Update Dependencies
+![Manage Packages](https://s3.amazonaws.com/gst-public-share/github/manage_packages.png)
+* Open project (ApproveConvertRename/project.json)
+* Double click on ApproveConvertRename.xaml to view the project
+![View Project](https://s3.amazonaws.com/gst-public-share/github/view_project.png)
+* Double click on any elements to drill into nested sequences
+* Click on Activities tab to view all of the available elements
+* Click on Variables tab to view all of the variables (can only see variables based on the defined scoping)
+![Variables](https://s3.amazonaws.com/gst-public-share/github/variable_configuration.png)
