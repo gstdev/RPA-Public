@@ -65,6 +65,9 @@
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:WorkflowViewState.IdRef="Sequence_16">
     <TryCatch DisplayName="Try Catch" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+      <TryCatch.Variables>
+        <Variable x:TypeArguments="x:String" Default="C:\Users\GST\Documents\UiPath\RPA-Public\Sample Documents\errorlog.txt" Name="errorLog" />
+      </TryCatch.Variables>
       <TryCatch.Try>
         <Flowchart DisplayName="Approve, Convert, And Rename" sap2010:WorkflowViewState.IdRef="Flowchart_1">
           <Flowchart.Variables>
@@ -154,7 +157,7 @@
                                                 <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" WaitForReady="INTERACTIVE" />
                                               </ui:SendHotkey.Target>
                                             </ui:SendHotkey>
-                                            <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type Into (Markup Drop Down)" EmptyField="False" sap2010:WorkflowViewState.IdRef="TypeInto_4" SendWindowMessages="False" SimulateType="False" Text="y">
+                                            <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type Into (Export as PDF)" EmptyField="False" sap2010:WorkflowViewState.IdRef="TypeInto_4" SendWindowMessages="False" SimulateType="False" Text="y">
                                               <ui:TypeInto.Target>
                                                 <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" WaitForReady="INTERACTIVE" />
                                               </ui:TypeInto.Target>
@@ -343,7 +346,7 @@
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
             </ActivityAction.Argument>
-            <WriteLine DisplayName="Write Line" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[exception.Message]" />
+            <ui:WriteTextFile DisplayName="Write Error" FileName="[errorLog]" sap2010:WorkflowViewState.IdRef="WriteTextFile_2" Text="[exception.Message]" />
           </ActivityAction>
         </Catch>
       </TryCatch.Catches>
@@ -351,7 +354,7 @@
         <ui:RetryScope DisplayName="Retry Scope" sap2010:WorkflowViewState.IdRef="RetryScope_1" NumberOfRetries="3" RetryInterval="00:00:05">
           <ui:RetryScope.ActivityBody>
             <ActivityAction>
-              <Flowchart DisplayName="Approve, Convert, And Rename" sap2010:WorkflowViewState.IdRef="Flowchart_2">
+              <Flowchart DisplayName="Approve, Convert, And Rename">
                 <Flowchart.Variables>
                   <Variable x:TypeArguments="s:String[]" Name="files" />
                   <Variable x:TypeArguments="x:Boolean" Name="pathExists" />
@@ -367,39 +370,40 @@
                   <Variable x:TypeArguments="x:TimeSpan" Default="00:00:02" Name="moveDelay" />
                 </Flowchart.Variables>
                 <Flowchart.StartNode>
-                  <FlowStep x:Name="__ReferenceID8" sap2010:WorkflowViewState.IdRef="FlowStep_10">
-                    <ui:PathExists DisplayName="Root Directory Exists?" Exists="[pathExists]" sap2010:WorkflowViewState.IdRef="PathExists_3" Path="[initialPath]" PathType="Folder" />
+                  <FlowStep x:Name="__ReferenceID8">
+                    <ui:PathExists DisplayName="Root Directory Exists?" Exists="[pathExists]" Path="[initialPath]" PathType="Folder" sap2010:WorkflowViewState.IdRef="PathExists_7" />
                     <FlowStep.Next>
-                      <FlowDecision x:Name="__ReferenceID7" Condition="[pathExists]" DisplayName="Flow Decision" sap2010:WorkflowViewState.IdRef="FlowDecision_2">
+                      <FlowDecision x:Name="__ReferenceID7" Condition="[pathExists]" DisplayName="Flow Decision">
                         <FlowDecision.True>
-                          <FlowStep x:Name="__ReferenceID6" sap2010:WorkflowViewState.IdRef="FlowStep_8">
-                            <Assign DisplayName="Root Directory Exists" sap2010:WorkflowViewState.IdRef="Assign_13">
+                          <FlowStep x:Name="__ReferenceID6">
+                            <Assign DisplayName="Root Directory Exists">
                               <Assign.To>
                                 <OutArgument x:TypeArguments="s:String[]">[files]</OutArgument>
                               </Assign.To>
                               <Assign.Value>
                                 <InArgument x:TypeArguments="s:String[]">[Directory.GetFiles(initialPath, searchPattern)]</InArgument>
                               </Assign.Value>
+                              <sap2010:WorkflowViewState.IdRef>Assign_31</sap2010:WorkflowViewState.IdRef>
                             </Assign>
                             <FlowStep.Next>
-                              <FlowStep x:Name="__ReferenceID9" sap2010:WorkflowViewState.IdRef="FlowStep_7">
-                                <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="Root Directory Loop" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[files]">
+                              <FlowStep x:Name="__ReferenceID9">
+                                <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="Root Directory Loop" Values="[files]">
                                   <ui:ForEach.Body>
                                     <ActivityAction x:TypeArguments="x:String">
                                       <ActivityAction.Argument>
                                         <DelegateInArgument x:TypeArguments="x:String" Name="file" />
                                       </ActivityAction.Argument>
-                                      <Sequence sap2010:WorkflowViewState.IdRef="Sequence_11">
-                                        <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_10">
-                                          <p:WordApplicationScope DisplayName="Word Application Scope" FilePath="[file]" sap2010:WorkflowViewState.IdRef="WordApplicationScope_2">
+                                      <Sequence>
+                                        <Sequence DisplayName="Body">
+                                          <p:WordApplicationScope DisplayName="Word Application Scope" FilePath="[file]">
                                             <p:WordApplicationScope.Body>
                                               <ActivityAction x:TypeArguments="ui:WordDocument">
                                                 <ActivityAction.Argument>
                                                   <DelegateInArgument x:TypeArguments="ui:WordDocument" Name="WordDocumentScope" />
                                                 </ActivityAction.Argument>
-                                                <Sequence DisplayName="Sequence (Approve All, Save, Close)" sap2010:WorkflowViewState.IdRef="Sequence_9">
-                                                  <Delay Duration="[loadDelay]" sap2010:WorkflowViewState.IdRef="Delay_9" />
-                                                  <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Into Word Application" sap2010:WorkflowViewState.IdRef="Click_6" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="False">
+                                                <Sequence DisplayName="Sequence (Approve All, Save, Close)">
+                                                  <Delay Duration="[loadDelay]" sap2010:WorkflowViewState.IdRef="Delay_15" />
+                                                  <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Into Word Application" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="False">
                                                     <ui:Click.CursorPosition>
                                                       <ui:CursorPosition Position="Center">
                                                         <ui:CursorPosition.OffsetX>
@@ -413,92 +417,110 @@
                                                     <ui:Click.Target>
                                                       <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="9eac47971d365e85206f66e4c305d355" Selector="&lt;wnd app='winword.exe' cls='OpusApp' /&gt;" WaitForReady="INTERACTIVE" />
                                                     </ui:Click.Target>
+                                                    <sap2010:WorkflowViewState.IdRef>Click_8</sap2010:WorkflowViewState.IdRef>
                                                   </ui:Click>
-                                                  <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Send Hotkey (Review Ribbon)" EmptyField="False" sap2010:WorkflowViewState.IdRef="SendHotkey_11" Key="r" KeyModifiers="Alt" SendWindowMessages="False" SpecialKey="False">
+                                                  <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Send Hotkey (Review Ribbon)" EmptyField="False" Key="r" KeyModifiers="Alt" SendWindowMessages="False" SpecialKey="False">
                                                     <ui:SendHotkey.Target>
                                                       <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" WaitForReady="INTERACTIVE" />
                                                     </ui:SendHotkey.Target>
+                                                    <sap2010:WorkflowViewState.IdRef>SendHotkey_23</sap2010:WorkflowViewState.IdRef>
                                                   </ui:SendHotkey>
-                                                  <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type Into (Approve All)" EmptyField="False" sap2010:WorkflowViewState.IdRef="TypeInto_5" SendWindowMessages="False" SimulateType="False" Text="a2l">
+                                                  <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type Into (Approve All)" EmptyField="False" SendWindowMessages="False" SimulateType="False" Text="a2l">
                                                     <ui:TypeInto.Target>
                                                       <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" WaitForReady="INTERACTIVE" />
                                                     </ui:TypeInto.Target>
+                                                    <sap2010:WorkflowViewState.IdRef>TypeInto_11</sap2010:WorkflowViewState.IdRef>
                                                   </ui:TypeInto>
-                                                  <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Send Hotkey (Review Ribbon)" EmptyField="False" sap2010:WorkflowViewState.IdRef="SendHotkey_12" Key="r" KeyModifiers="Alt" SendWindowMessages="False" SpecialKey="False">
+                                                  <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Send Hotkey (Review Ribbon)" EmptyField="False" Key="r" KeyModifiers="Alt" SendWindowMessages="False" SpecialKey="False">
                                                     <ui:SendHotkey.Target>
                                                       <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" WaitForReady="INTERACTIVE" />
                                                     </ui:SendHotkey.Target>
+                                                    <sap2010:WorkflowViewState.IdRef>SendHotkey_24</sap2010:WorkflowViewState.IdRef>
                                                   </ui:SendHotkey>
-                                                  <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type Into (Markup Drop Down)" EmptyField="False" sap2010:WorkflowViewState.IdRef="TypeInto_6" SendWindowMessages="False" SimulateType="False" Text="td[k(down)][k(down)][k(enter)]">
+                                                  <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type Into (Markup Drop Down)" EmptyField="False" SendWindowMessages="False" SimulateType="False" Text="td[k(down)][k(down)][k(enter)]">
                                                     <ui:TypeInto.Target>
                                                       <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" WaitForReady="INTERACTIVE" />
                                                     </ui:TypeInto.Target>
+                                                    <sap2010:WorkflowViewState.IdRef>TypeInto_12</sap2010:WorkflowViewState.IdRef>
                                                   </ui:TypeInto>
-                                                  <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Send Hotkey (Review Ribbon)" EmptyField="False" sap2010:WorkflowViewState.IdRef="SendHotkey_13" Key="r" KeyModifiers="Alt" SendWindowMessages="False" SpecialKey="False">
+                                                  <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Send Hotkey (Review Ribbon)" EmptyField="False" Key="r" KeyModifiers="Alt" SendWindowMessages="False" SpecialKey="False">
                                                     <ui:SendHotkey.Target>
                                                       <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" WaitForReady="INTERACTIVE" />
                                                     </ui:SendHotkey.Target>
+                                                    <sap2010:WorkflowViewState.IdRef>SendHotkey_25</sap2010:WorkflowViewState.IdRef>
                                                   </ui:SendHotkey>
-                                                  <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type Into (Markup Drop Down)" EmptyField="False" sap2010:WorkflowViewState.IdRef="TypeInto_7" SendWindowMessages="False" SimulateType="False" Text="y">
+                                                  <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type Into (Export as PDF)" EmptyField="False" SendWindowMessages="False" SimulateType="False" Text="y">
                                                     <ui:TypeInto.Target>
                                                       <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" WaitForReady="INTERACTIVE" />
                                                     </ui:TypeInto.Target>
+                                                    <sap2010:WorkflowViewState.IdRef>TypeInto_13</sap2010:WorkflowViewState.IdRef>
                                                   </ui:TypeInto>
-                                                  <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Send Hotkey (Enter)" EmptyField="False" sap2010:WorkflowViewState.IdRef="SendHotkey_14" Key="enter" KeyModifiers="None" SendWindowMessages="False" SpecialKey="True">
+                                                  <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Send Hotkey (Enter)" EmptyField="False" Key="enter" KeyModifiers="None" SendWindowMessages="False" SpecialKey="True">
                                                     <ui:SendHotkey.Target>
                                                       <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="9f360fa107dd1e07967117b6c9258fe4" Selector="&lt;wnd app='winword.exe' cls='#32770' title='Publish as PDF or XPS' /&gt;" WaitForReady="INTERACTIVE" />
                                                     </ui:SendHotkey.Target>
+                                                    <sap2010:WorkflowViewState.IdRef>SendHotkey_26</sap2010:WorkflowViewState.IdRef>
                                                   </ui:SendHotkey>
-                                                  <Delay Duration="[convertDelay]" sap2010:WorkflowViewState.IdRef="Delay_10" />
-                                                  <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Send Hotkey (Save Document)" EmptyField="False" sap2010:WorkflowViewState.IdRef="SendHotkey_15" Key="s" KeyModifiers="Ctrl" SendWindowMessages="False" SpecialKey="False">
+                                                  <Delay Duration="[convertDelay]" sap2010:WorkflowViewState.IdRef="Delay_16" />
+                                                  <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Send Hotkey (Save Document)" EmptyField="False" Key="s" KeyModifiers="Ctrl" SendWindowMessages="False" SpecialKey="False">
                                                     <ui:SendHotkey.Target>
                                                       <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" WaitForReady="INTERACTIVE" />
                                                     </ui:SendHotkey.Target>
+                                                    <sap2010:WorkflowViewState.IdRef>SendHotkey_27</sap2010:WorkflowViewState.IdRef>
                                                   </ui:SendHotkey>
-                                                  <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Send Hotkey (Close Word)" EmptyField="False" sap2010:WorkflowViewState.IdRef="SendHotkey_16" Key="f4" KeyModifiers="Alt" SendWindowMessages="False" SpecialKey="True">
+                                                  <ui:SendHotkey DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Send Hotkey (Close Word)" EmptyField="False" Key="f4" KeyModifiers="Alt" SendWindowMessages="False" SpecialKey="True">
                                                     <ui:SendHotkey.Target>
                                                       <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" WaitForReady="INTERACTIVE" />
                                                     </ui:SendHotkey.Target>
+                                                    <sap2010:WorkflowViewState.IdRef>SendHotkey_28</sap2010:WorkflowViewState.IdRef>
                                                   </ui:SendHotkey>
-                                                  <Assign DisplayName="Assign (Set Filename)" sap2010:WorkflowViewState.IdRef="Assign_14">
+                                                  <Assign DisplayName="Assign (Set Filename)">
                                                     <Assign.To>
                                                       <OutArgument x:TypeArguments="x:String">[fileName]</OutArgument>
                                                     </Assign.To>
                                                     <Assign.Value>
                                                       <InArgument x:TypeArguments="x:String">[Path.GetFileName(file)]</InArgument>
                                                     </Assign.Value>
+                                                    <sap2010:WorkflowViewState.IdRef>Assign_32</sap2010:WorkflowViewState.IdRef>
                                                   </Assign>
-                                                  <Assign sap2010:WorkflowViewState.IdRef="Assign_15">
+                                                  <Assign>
                                                     <Assign.To>
                                                       <OutArgument x:TypeArguments="x:String">[fileNameWithoutExt]</OutArgument>
                                                     </Assign.To>
                                                     <Assign.Value>
                                                       <InArgument x:TypeArguments="x:String">[Path.GetFileNameWithoutExtension(file)]</InArgument>
                                                     </Assign.Value>
+                                                    <sap2010:WorkflowViewState.IdRef>Assign_33</sap2010:WorkflowViewState.IdRef>
                                                   </Assign>
+                                                  <sap2010:WorkflowViewState.IdRef>Sequence_25</sap2010:WorkflowViewState.IdRef>
                                                 </Sequence>
                                               </ActivityAction>
                                             </p:WordApplicationScope.Body>
+                                            <sap2010:WorkflowViewState.IdRef>WordApplicationScope_4</sap2010:WorkflowViewState.IdRef>
                                           </p:WordApplicationScope>
+                                          <sap2010:WorkflowViewState.IdRef>Sequence_26</sap2010:WorkflowViewState.IdRef>
                                         </Sequence>
-                                        <Assign DisplayName="Assign (Set Source File)" sap2010:WorkflowViewState.IdRef="Assign_16">
+                                        <Assign DisplayName="Assign (Set Source File)">
                                           <Assign.To>
                                             <OutArgument x:TypeArguments="x:String">[sourceFile]</OutArgument>
                                           </Assign.To>
                                           <Assign.Value>
                                             <InArgument x:TypeArguments="x:String">[initialPath + "\" + fileName]</InArgument>
                                           </Assign.Value>
+                                          <sap2010:WorkflowViewState.IdRef>Assign_34</sap2010:WorkflowViewState.IdRef>
                                         </Assign>
-                                        <Delay Duration="[moveDelay]" sap2010:WorkflowViewState.IdRef="Delay_11" />
-                                        <ui:MoveFile ContinueOnError="{x:Null}" Destination="[approvedWordDirectory + &quot;\&quot;]" DisplayName="Move Approved Word Doc" sap2010:WorkflowViewState.IdRef="MoveFile_5" Overwrite="True" Path="[sourceFile]" />
-                                        <ui:MoveFile ContinueOnError="{x:Null}" Destination="[convertedPDFDirectory]" DisplayName="Move Converted PDF" sap2010:WorkflowViewState.IdRef="MoveFile_6" Overwrite="True" Path="[initialPath + &quot;\&quot; + fileNameWithoutExt + &quot;.pdf&quot;]" />
+                                        <Delay Duration="[moveDelay]" sap2010:WorkflowViewState.IdRef="Delay_17" />
+                                        <ui:MoveFile ContinueOnError="{x:Null}" Destination="[approvedWordDirectory + &quot;\&quot;]" DisplayName="Move Approved Word Doc" Overwrite="True" Path="[sourceFile]" sap2010:WorkflowViewState.IdRef="MoveFile_11" />
+                                        <ui:MoveFile ContinueOnError="{x:Null}" Destination="[convertedPDFDirectory]" DisplayName="Move Converted PDF" Overwrite="True" Path="[initialPath + &quot;\&quot; + fileNameWithoutExt + &quot;.pdf&quot;]" sap2010:WorkflowViewState.IdRef="MoveFile_12" />
+                                        <sap2010:WorkflowViewState.IdRef>Sequence_27</sap2010:WorkflowViewState.IdRef>
                                       </Sequence>
                                     </ActivityAction>
                                   </ui:ForEach.Body>
+                                  <sap2010:WorkflowViewState.IdRef>ForEach`1_7</sap2010:WorkflowViewState.IdRef>
                                 </ui:ForEach>
                                 <FlowStep.Next>
-                                  <FlowStep x:Name="__ReferenceID11" sap2010:WorkflowViewState.IdRef="FlowStep_6">
-                                    <Sequence DisplayName="Rename Files" sap2010:WorkflowViewState.IdRef="Sequence_15">
+                                  <FlowStep x:Name="__ReferenceID11">
+                                    <Sequence DisplayName="Rename Files">
                                       <Sequence.Variables>
                                         <Variable x:TypeArguments="x:String" Name="fileRename" />
                                         <Variable x:TypeArguments="x:String" Name="matchingCell" />
@@ -512,106 +534,125 @@
                                         <Variable x:TypeArguments="x:String" Default="DatabaseEntries" Name="excelSheetName" />
                                         <Variable x:TypeArguments="x:Boolean" Name="cellMatchNotFound" />
                                       </Sequence.Variables>
-                                      <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Open File Mapping Excel Spreadsheet" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" WorkbookPath="[excelFile]">
+                                      <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Open File Mapping Excel Spreadsheet" WorkbookPath="[excelFile]">
                                         <ui:ExcelApplicationScope.Body>
                                           <ActivityAction x:TypeArguments="ui:WorkbookApplication">
                                             <ActivityAction.Argument>
                                               <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
                                             </ActivityAction.Argument>
-                                            <Sequence DisplayName="Check for Cell Match" sap2010:WorkflowViewState.IdRef="Sequence_14">
-                                              <ui:PathExists Exists="{x:Null}" DisplayName="Document Directory Path Check" sap2010:WorkflowViewState.IdRef="PathExists_4" Path="[convertedPDFDirectory]" PathType="Folder" />
-                                              <Assign DisplayName="Get Files" sap2010:WorkflowViewState.IdRef="Assign_17">
+                                            <Sequence DisplayName="Check for Cell Match">
+                                              <ui:PathExists Exists="{x:Null}" DisplayName="Document Directory Path Check" Path="[convertedPDFDirectory]" PathType="Folder" sap2010:WorkflowViewState.IdRef="PathExists_8" />
+                                              <Assign DisplayName="Get Files">
                                                 <Assign.To>
                                                   <OutArgument x:TypeArguments="s:String[]">[files]</OutArgument>
                                                 </Assign.To>
                                                 <Assign.Value>
                                                   <InArgument x:TypeArguments="s:String[]">[Directory.GetFiles(convertedPDFDirectory)]</InArgument>
                                                 </Assign.Value>
+                                                <sap2010:WorkflowViewState.IdRef>Assign_35</sap2010:WorkflowViewState.IdRef>
                                               </Assign>
-                                              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="Loop Through Files" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[files]">
+                                              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="Loop Through Files" Values="[files]">
                                                 <ui:ForEach.Body>
                                                   <ActivityAction x:TypeArguments="x:Object">
                                                     <ActivityAction.Argument>
                                                       <DelegateInArgument x:TypeArguments="x:Object" Name="file" />
                                                     </ActivityAction.Argument>
-                                                    <Sequence DisplayName="Try to Find Cell Match" sap2010:WorkflowViewState.IdRef="Sequence_13">
-                                                      <Assign sap2010:WorkflowViewState.IdRef="Assign_18">
+                                                    <Sequence DisplayName="Try to Find Cell Match">
+                                                      <Assign>
                                                         <Assign.To>
                                                           <OutArgument x:TypeArguments="x:String">[filename]</OutArgument>
                                                         </Assign.To>
                                                         <Assign.Value>
                                                           <InArgument x:TypeArguments="x:String">[Path.GetFileNameWithoutExtension(file.ToString())]</InArgument>
                                                         </Assign.Value>
+                                                        <sap2010:WorkflowViewState.IdRef>Assign_36</sap2010:WorkflowViewState.IdRef>
                                                       </Assign>
-                                                      <ui:ExcelLookUpRange DisplayName="LookUp Range" sap2010:WorkflowViewState.IdRef="ExcelLookUpRange_2" Range="[rawFilenameColumnRange]" Result="[matchingCell]" SheetName="[excelSheetName]" Value="[filename]" />
-                                                      <Assign sap2010:WorkflowViewState.IdRef="Assign_19">
+                                                      <ui:ExcelLookUpRange DisplayName="LookUp Range" Range="[rawFilenameColumnRange]" Result="[matchingCell]" SheetName="[excelSheetName]" Value="[filename]" sap2010:WorkflowViewState.IdRef="ExcelLookUpRange_4" />
+                                                      <Assign>
                                                         <Assign.To>
                                                           <OutArgument x:TypeArguments="x:Boolean">[cellMatchNotFound]</OutArgument>
                                                         </Assign.To>
                                                         <Assign.Value>
                                                           <InArgument x:TypeArguments="x:Boolean">[String.IsNullOrEmpty(matchingCell)]</InArgument>
                                                         </Assign.Value>
+                                                        <sap2010:WorkflowViewState.IdRef>Assign_37</sap2010:WorkflowViewState.IdRef>
                                                       </Assign>
-                                                      <If Condition="[cellMatchNotFound]" sap2010:WorkflowViewState.IdRef="If_2">
+                                                      <If Condition="[cellMatchNotFound]">
                                                         <If.Then>
-                                                          <WriteLine DisplayName="Write Line" sap2010:WorkflowViewState.IdRef="WriteLine_3" Text="[&quot;No Match: &quot; + filename]" />
+                                                          <WriteLine DisplayName="Write Line" Text="[&quot;No Match: &quot; + filename]" sap2010:WorkflowViewState.IdRef="WriteLine_5" />
                                                         </If.Then>
                                                         <If.Else>
-                                                          <Sequence DisplayName="Cell Match" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                                                          <Sequence DisplayName="Cell Match">
                                                             <Sequence.Variables>
                                                               <Variable x:TypeArguments="x:String" Default="C:\Users\GST\Documents\Sample Documents\Converted\Renamed" Name="renamedFileDirectory" />
                                                             </Sequence.Variables>
-                                                            <Assign sap2010:WorkflowViewState.IdRef="Assign_20">
+                                                            <Assign>
                                                               <Assign.To>
                                                                 <OutArgument x:TypeArguments="x:String">[renameCell]</OutArgument>
                                                               </Assign.To>
                                                               <Assign.Value>
                                                                 <InArgument x:TypeArguments="x:String">[matchingCell.Replace(filenameColumn, uuidColumn)]</InArgument>
                                                               </Assign.Value>
+                                                              <sap2010:WorkflowViewState.IdRef>Assign_38</sap2010:WorkflowViewState.IdRef>
                                                             </Assign>
-                                                            <ui:ExcelReadCell Cell="[renameCell]" DisplayName="Read Cell" sap2010:WorkflowViewState.IdRef="ExcelReadCell_2" SheetName="[excelSheetName]">
+                                                            <ui:ExcelReadCell Cell="[renameCell]" DisplayName="Read Cell" SheetName="[excelSheetName]">
                                                               <ui:ExcelReadCell.Result>
                                                                 <OutArgument x:TypeArguments="x:String">[fileRename]</OutArgument>
                                                               </ui:ExcelReadCell.Result>
+                                                              <sap2010:WorkflowViewState.IdRef>ExcelReadCell_4</sap2010:WorkflowViewState.IdRef>
                                                             </ui:ExcelReadCell>
-                                                            <Assign DisplayName="Set Final Destination File" sap2010:WorkflowViewState.IdRef="Assign_21">
+                                                            <Assign DisplayName="Set Final Destination File">
                                                               <Assign.To>
                                                                 <OutArgument x:TypeArguments="x:String">[finalFile]</OutArgument>
                                                               </Assign.To>
                                                               <Assign.Value>
                                                                 <InArgument x:TypeArguments="x:String">[renamedFileDirectory + "\" + fileRename + ".pdf"]</InArgument>
                                                               </Assign.Value>
+                                                              <sap2010:WorkflowViewState.IdRef>Assign_39</sap2010:WorkflowViewState.IdRef>
                                                             </Assign>
-                                                            <ui:MoveFile ContinueOnError="{x:Null}" Destination="[finalFile]" DisplayName="Move and Rename File" sap2010:WorkflowViewState.IdRef="MoveFile_7" Overwrite="True" Path="[file.ToString()]" />
-                                                            <ui:ExcelWriteCell Cell="[matchingCell.Replace(filenameColumn, actionColumn)]" DisplayName="Write Cell" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_2" SheetName="[excelSheetName]" Text="Renamed" />
+                                                            <ui:MoveFile ContinueOnError="{x:Null}" Destination="[finalFile]" DisplayName="Move and Rename File" Overwrite="True" Path="[file.ToString()]" sap2010:WorkflowViewState.IdRef="MoveFile_13" />
+                                                            <ui:ExcelWriteCell Cell="[matchingCell.Replace(filenameColumn, actionColumn)]" DisplayName="Write Cell" SheetName="[excelSheetName]" Text="Renamed" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_4" />
+                                                            <sap2010:WorkflowViewState.IdRef>Sequence_28</sap2010:WorkflowViewState.IdRef>
                                                           </Sequence>
                                                         </If.Else>
+                                                        <sap2010:WorkflowViewState.IdRef>If_4</sap2010:WorkflowViewState.IdRef>
                                                       </If>
+                                                      <sap2010:WorkflowViewState.IdRef>Sequence_29</sap2010:WorkflowViewState.IdRef>
                                                     </Sequence>
                                                   </ActivityAction>
                                                 </ui:ForEach.Body>
+                                                <sap2010:WorkflowViewState.IdRef>ForEach`1_8</sap2010:WorkflowViewState.IdRef>
                                               </ui:ForEach>
+                                              <sap2010:WorkflowViewState.IdRef>Sequence_30</sap2010:WorkflowViewState.IdRef>
                                             </Sequence>
                                           </ActivityAction>
                                         </ui:ExcelApplicationScope.Body>
+                                        <sap2010:WorkflowViewState.IdRef>ExcelApplicationScope_4</sap2010:WorkflowViewState.IdRef>
                                       </ui:ExcelApplicationScope>
+                                      <sap2010:WorkflowViewState.IdRef>Sequence_31</sap2010:WorkflowViewState.IdRef>
                                     </Sequence>
+                                    <sap2010:WorkflowViewState.IdRef>FlowStep_16</sap2010:WorkflowViewState.IdRef>
                                   </FlowStep>
                                 </FlowStep.Next>
+                                <sap2010:WorkflowViewState.IdRef>FlowStep_17</sap2010:WorkflowViewState.IdRef>
                               </FlowStep>
                             </FlowStep.Next>
+                            <sap2010:WorkflowViewState.IdRef>FlowStep_18</sap2010:WorkflowViewState.IdRef>
                           </FlowStep>
                         </FlowDecision.True>
                         <FlowDecision.False>
-                          <FlowStep x:Name="__ReferenceID10" sap2010:WorkflowViewState.IdRef="FlowStep_9">
-                            <ui:SelectFolder DisplayName="User Selects Directory" sap2010:WorkflowViewState.IdRef="SelectFolder_2" SelectedFolder="[initialPath]" />
+                          <FlowStep x:Name="__ReferenceID10">
+                            <ui:SelectFolder DisplayName="User Selects Directory" SelectedFolder="[initialPath]" sap2010:WorkflowViewState.IdRef="SelectFolder_4" />
                             <FlowStep.Next>
                               <x:Reference>__ReferenceID6</x:Reference>
                             </FlowStep.Next>
+                            <sap2010:WorkflowViewState.IdRef>FlowStep_19</sap2010:WorkflowViewState.IdRef>
                           </FlowStep>
                         </FlowDecision.False>
+                        <sap2010:WorkflowViewState.IdRef>FlowDecision_4</sap2010:WorkflowViewState.IdRef>
                       </FlowDecision>
                     </FlowStep.Next>
+                    <sap2010:WorkflowViewState.IdRef>FlowStep_20</sap2010:WorkflowViewState.IdRef>
                   </FlowStep>
                 </Flowchart.StartNode>
                 <x:Reference>__ReferenceID7</x:Reference>
@@ -620,6 +661,7 @@
                 <x:Reference>__ReferenceID9</x:Reference>
                 <x:Reference>__ReferenceID10</x:Reference>
                 <x:Reference>__ReferenceID11</x:Reference>
+                <sap2010:WorkflowViewState.IdRef>Flowchart_4</sap2010:WorkflowViewState.IdRef>
               </Flowchart>
             </ActivityAction>
           </ui:RetryScope.ActivityBody>
@@ -629,7 +671,7 @@
         </ui:RetryScope>
       </TryCatch.Finally>
     </TryCatch>
-    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -804,7 +846,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="WriteLine_2" sap:VirtualizedContainerService.HintSize="210,61" />
+      <sap2010:ViewStateData Id="WriteTextFile_2" sap:VirtualizedContainerService.HintSize="314,87" />
       <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="404,21">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -813,104 +855,104 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="PathExists_3" sap:VirtualizedContainerService.HintSize="200,51">
+      <sap2010:ViewStateData Id="PathExists_7" sap:VirtualizedContainerService.HintSize="200,51">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Assign_13" sap:VirtualizedContainerService.HintSize="242,60">
+      <sap2010:ViewStateData Id="Assign_31" sap:VirtualizedContainerService.HintSize="242,60">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Delay_9" sap:VirtualizedContainerService.HintSize="314,22" />
-      <sap2010:ViewStateData Id="Click_6" sap:VirtualizedContainerService.HintSize="314,106" />
-      <sap2010:ViewStateData Id="SendHotkey_11" sap:VirtualizedContainerService.HintSize="314,116" />
-      <sap2010:ViewStateData Id="TypeInto_5" sap:VirtualizedContainerService.HintSize="314,96" />
-      <sap2010:ViewStateData Id="SendHotkey_12" sap:VirtualizedContainerService.HintSize="314,116" />
-      <sap2010:ViewStateData Id="TypeInto_6" sap:VirtualizedContainerService.HintSize="314,96" />
-      <sap2010:ViewStateData Id="SendHotkey_13" sap:VirtualizedContainerService.HintSize="314,116" />
-      <sap2010:ViewStateData Id="TypeInto_7" sap:VirtualizedContainerService.HintSize="314,96" />
-      <sap2010:ViewStateData Id="SendHotkey_14" sap:VirtualizedContainerService.HintSize="314,154" />
-      <sap2010:ViewStateData Id="Delay_10" sap:VirtualizedContainerService.HintSize="314,22" />
-      <sap2010:ViewStateData Id="SendHotkey_15" sap:VirtualizedContainerService.HintSize="314,116" />
-      <sap2010:ViewStateData Id="SendHotkey_16" sap:VirtualizedContainerService.HintSize="314,116" />
-      <sap2010:ViewStateData Id="Assign_14" sap:VirtualizedContainerService.HintSize="314,60" />
-      <sap2010:ViewStateData Id="Assign_15" sap:VirtualizedContainerService.HintSize="314,60" />
-      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="336,1936">
+      <sap2010:ViewStateData Id="Delay_15" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="Click_8" sap:VirtualizedContainerService.HintSize="314,106" />
+      <sap2010:ViewStateData Id="SendHotkey_23" sap:VirtualizedContainerService.HintSize="314,116" />
+      <sap2010:ViewStateData Id="TypeInto_11" sap:VirtualizedContainerService.HintSize="314,96" />
+      <sap2010:ViewStateData Id="SendHotkey_24" sap:VirtualizedContainerService.HintSize="314,116" />
+      <sap2010:ViewStateData Id="TypeInto_12" sap:VirtualizedContainerService.HintSize="314,96" />
+      <sap2010:ViewStateData Id="SendHotkey_25" sap:VirtualizedContainerService.HintSize="314,116" />
+      <sap2010:ViewStateData Id="TypeInto_13" sap:VirtualizedContainerService.HintSize="314,96" />
+      <sap2010:ViewStateData Id="SendHotkey_26" sap:VirtualizedContainerService.HintSize="314,154" />
+      <sap2010:ViewStateData Id="Delay_16" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="SendHotkey_27" sap:VirtualizedContainerService.HintSize="314,116" />
+      <sap2010:ViewStateData Id="SendHotkey_28" sap:VirtualizedContainerService.HintSize="314,116" />
+      <sap2010:ViewStateData Id="Assign_32" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_33" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Sequence_25" sap:VirtualizedContainerService.HintSize="336,1936">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="WordApplicationScope_2" sap:VirtualizedContainerService.HintSize="414,2045" />
-      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="436,2169">
+      <sap2010:ViewStateData Id="WordApplicationScope_4" sap:VirtualizedContainerService.HintSize="414,2045" />
+      <sap2010:ViewStateData Id="Sequence_26" sap:VirtualizedContainerService.HintSize="436,2169">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Assign_16" sap:VirtualizedContainerService.HintSize="436,60" />
-      <sap2010:ViewStateData Id="Delay_11" sap:VirtualizedContainerService.HintSize="436,22" />
-      <sap2010:ViewStateData Id="MoveFile_5" sap:VirtualizedContainerService.HintSize="436,22" />
-      <sap2010:ViewStateData Id="MoveFile_6" sap:VirtualizedContainerService.HintSize="436,22" />
-      <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="458,2579">
+      <sap2010:ViewStateData Id="Assign_34" sap:VirtualizedContainerService.HintSize="436,60" />
+      <sap2010:ViewStateData Id="Delay_17" sap:VirtualizedContainerService.HintSize="436,22" />
+      <sap2010:ViewStateData Id="MoveFile_11" sap:VirtualizedContainerService.HintSize="436,22" />
+      <sap2010:ViewStateData Id="MoveFile_12" sap:VirtualizedContainerService.HintSize="436,22" />
+      <sap2010:ViewStateData Id="Sequence_27" sap:VirtualizedContainerService.HintSize="458,2579">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ForEach`1_3" sap:VirtualizedContainerService.HintSize="474,2713" />
-      <sap2010:ViewStateData Id="PathExists_4" sap:VirtualizedContainerService.HintSize="609,89" />
-      <sap2010:ViewStateData Id="Assign_17" sap:VirtualizedContainerService.HintSize="609,60" />
-      <sap2010:ViewStateData Id="Assign_18" sap:VirtualizedContainerService.HintSize="571,60" />
-      <sap2010:ViewStateData Id="ExcelLookUpRange_2" sap:VirtualizedContainerService.HintSize="571,87" />
-      <sap2010:ViewStateData Id="Assign_19" sap:VirtualizedContainerService.HintSize="571,60" />
-      <sap2010:ViewStateData Id="WriteLine_3" sap:VirtualizedContainerService.HintSize="210,61" />
-      <sap2010:ViewStateData Id="Assign_20" sap:VirtualizedContainerService.HintSize="314,60" />
-      <sap2010:ViewStateData Id="ExcelReadCell_2" sap:VirtualizedContainerService.HintSize="314,59" />
-      <sap2010:ViewStateData Id="Assign_21" sap:VirtualizedContainerService.HintSize="314,60" />
-      <sap2010:ViewStateData Id="MoveFile_7" sap:VirtualizedContainerService.HintSize="314,22" />
-      <sap2010:ViewStateData Id="ExcelWriteCell_2" sap:VirtualizedContainerService.HintSize="314,87" />
-      <sap2010:ViewStateData Id="Sequence_12" sap:VirtualizedContainerService.HintSize="336,572">
+      <sap2010:ViewStateData Id="ForEach`1_7" sap:VirtualizedContainerService.HintSize="474,2713" />
+      <sap2010:ViewStateData Id="PathExists_8" sap:VirtualizedContainerService.HintSize="609,89" />
+      <sap2010:ViewStateData Id="Assign_35" sap:VirtualizedContainerService.HintSize="609,60" />
+      <sap2010:ViewStateData Id="Assign_36" sap:VirtualizedContainerService.HintSize="571,60" />
+      <sap2010:ViewStateData Id="ExcelLookUpRange_4" sap:VirtualizedContainerService.HintSize="571,87" />
+      <sap2010:ViewStateData Id="Assign_37" sap:VirtualizedContainerService.HintSize="571,60" />
+      <sap2010:ViewStateData Id="WriteLine_5" sap:VirtualizedContainerService.HintSize="210,61" />
+      <sap2010:ViewStateData Id="Assign_38" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="ExcelReadCell_4" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Assign_39" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="MoveFile_13" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="ExcelWriteCell_4" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Sequence_28" sap:VirtualizedContainerService.HintSize="336,572">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="571,719" />
-      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="593,1170">
+      <sap2010:ViewStateData Id="If_4" sap:VirtualizedContainerService.HintSize="571,719" />
+      <sap2010:ViewStateData Id="Sequence_29" sap:VirtualizedContainerService.HintSize="593,1170">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ForEach`1_4" sap:VirtualizedContainerService.HintSize="609,1303" />
-      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="631,1656">
+      <sap2010:ViewStateData Id="ForEach`1_8" sap:VirtualizedContainerService.HintSize="609,1303" />
+      <sap2010:ViewStateData Id="Sequence_30" sap:VirtualizedContainerService.HintSize="631,1656">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ExcelApplicationScope_2" sap:VirtualizedContainerService.HintSize="645,1765" />
-      <sap2010:ViewStateData Id="Sequence_15" sap:VirtualizedContainerService.HintSize="200,51">
+      <sap2010:ViewStateData Id="ExcelApplicationScope_4" sap:VirtualizedContainerService.HintSize="645,1765" />
+      <sap2010:ViewStateData Id="Sequence_31" sap:VirtualizedContainerService.HintSize="200,51">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_6">
+      <sap2010:ViewStateData Id="FlowStep_16">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">30,504.5</av:Point>
@@ -918,7 +960,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_7">
+      <sap2010:ViewStateData Id="FlowStep_17">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">30,424</av:Point>
@@ -927,7 +969,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_8">
+      <sap2010:ViewStateData Id="FlowStep_18">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">9,320</av:Point>
@@ -936,14 +978,14 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="SelectFolder_2" sap:VirtualizedContainerService.HintSize="200,22">
+      <sap2010:ViewStateData Id="SelectFolder_4" sap:VirtualizedContainerService.HintSize="200,22">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_9">
+      <sap2010:ViewStateData Id="FlowStep_19">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">350,319</av:Point>
@@ -952,7 +994,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowDecision_2" sap:VirtualizedContainerService.HintSize="79,87">
+      <sap2010:ViewStateData Id="FlowDecision_4" sap:VirtualizedContainerService.HintSize="79,87">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -963,7 +1005,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_10">
+      <sap2010:ViewStateData Id="FlowStep_20">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">200,104.5</av:Point>
@@ -972,7 +1014,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Flowchart_2" sap:VirtualizedContainerService.HintSize="645,792">
+      <sap2010:ViewStateData Id="Flowchart_4" sap:VirtualizedContainerService.HintSize="200,51">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>

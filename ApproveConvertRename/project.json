@@ -3,11 +3,11 @@
   "description": "Loop through files in directory",
   "main": "NewActivity.xaml",
   "dependencies": {
-    "UiPath.UIAutomation.Activities": "19.1.0",
-    "UiPath.System.Activities": "18.4.2",
-    "UiPath.Excel.Activities": "2.5.1",
     "UiPath.Mail.Activities": "1.3.0",
-    "UiPath.Word.Activities": "1.3.0"
+    "UiPath.Word.Activities": "1.3.0",
+    "UiPath.UIAutomation.Activities": "19.2.0",
+    "UiPath.System.Activities": "19.2.0",
+    "UiPath.Excel.Activities": "2.5.2"
   },
   "schemaVersion": "3.2",
   "studioVersion": "18.3.0.0",
