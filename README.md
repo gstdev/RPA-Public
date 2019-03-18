@@ -41,5 +41,17 @@ We have been interested in RPA for over a year now and spent some time with UiPa
 * Verify all of your hotkeys match (set in Root Directory Loop scope)
   * Approve all comments
     * Alt + r
+    * a2l
+  * Set markup drow down to "No Markup" selection, just execute what's inside the parentheses of [k()] (i.e. down or enter)
+    * Alt + r
+    * td[k(down)][k(down)][k(enter)]
+  * Export as PDF
+    * Alt + r
+    * y
+    * Enter
+  * Save document
+    * Ctrl + s
+  * Close application
+    * Alt + F4
   
 * Since the main workflow is "Approve, Convert, and Rename" and it exists in both the Try Catch and the Finally Retry Scope, I would recommend making necessary modifications in just the Try Catch and then copy/paste into the Finally Retry Scope.  I have this in place since I would occassionally receive unexpected exceptions.
