@@ -14,12 +14,13 @@ We have been interested in RPA for over a year now and spent some time with UiPa
 * Install UiPath Studio
 * Clone git repository
 * Open up UiPath Studio
-* Add/Update Dependencies
+* Add/Update Dependencies (Mail, Word, Excel, UIAutomation, System)
 ![Manage Packages](https://s3.amazonaws.com/gst-public-share/github/manage_packages.png)
 * Open project (ApproveConvertRename/project.json)
 * Double click on ApproveConvertRename.xaml to view the project
 ![View Project](https://s3.amazonaws.com/gst-public-share/github/view_project.png)
 * Double click on any elements to drill into nested sequences
-* Click on Activities tab to view all of the available elements
-* Click on Variables tab to view all of the variables (can only see variables based on the defined scoping)
+* Click on Activities tab (in left side navigation) to view all of the available elements
+* Click on Variables tab (in main project) to view all of the variables (can only see variables based on the defined scoping)
 ![Variables](https://s3.amazonaws.com/gst-public-share/github/variable_configuration.png)
+* Create necessary directories and update variables in order to succesfully run this sample project
