@@ -26,6 +26,7 @@ We have been interested in RPA for over a year now and spent some time with UiPa
 * Click on Variables tab (in main project) to view all of the variables (can only see variables based on the defined scoping)
 ![Variables](https://s3.amazonaws.com/gst-public-share/github/variable_configuration.png)
 * Create necessary directories and update variables in order to succesfully run this sample project
+
 | Variable  | Scope |
 | ------------- | ------------- |
 | initialPath  | Approve, Convert, and Rename  |
@@ -34,5 +35,6 @@ We have been interested in RPA for over a year now and spent some time with UiPa
 | errorLog  | Try Catch  |
 | excelFile  | Rename Files  |
 | renamedFileDirectory  | Cell Match  |
+
 * Verify all of your hotkeys are the same
 * Since the main workflow is "Approve, Convert, and Rename" and it exists in both the Try Catch and the Finally Retry Scope, I would recommend making necessary modifications in just the Try Catch and then copy/paste into the Finally Retry Scope.  I have this in place since I would occassionally receive unexpected exceptions.
