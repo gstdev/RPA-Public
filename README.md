@@ -11,7 +11,22 @@ Client needed hundreds of Word documents (.doc and .docx) converted to PDF forma
 We have been interested in RPA since early 2018 and spent some time with UiPath but didn't have an actual use case to do a proof of concept.  Currently the three RPA marketplace leaders are <a href="https://www.uipath.com" target="_blank">UiPath</a>, <a href="https://www.automationanywhere.com/" target="_blank">Automation Anywhere</a>, and <a href="https://www.blueprism.com" target="_blank">Blue Prism</a>.  We decided to use UiPath since they offer a free <a href="https://www.uipath.com/developers/community-edition-download" target="_blank">Community Edition</a>.
 
 # Summary
-This project took roughly 9 hours to put together.  Manually executing this task for one document would roughly take 1 minute to execute and there is risk when it comes to moving the files or matching/renaming the file.  We now have an accurate approach to execute this task for an unlimited number of documents.  Imagine if this task was one person's full time job and they were getting paid the federal minimum wage of $7.25.  That would mean they could process about 480 documents for $58 per day (this doesn't even take into account the cost of errors).  Now imagine if you had a team of 5 people performing this same task!  You can easily see the potential benefits of RPA for enterprises that have a lot of manual tasks being performed.  Here is an <a href="https://www.uipath.com/blog/rpa-and-the-roi-conundrum" target="_blank">interesting article</a> that goes over RPA and the ROI conundrum.  Feel free to send us an email at rpa@gstdev.com if you're interested in learning more about RPA.
+This project took roughly 9 hours to put together.  Manually executing this task for one document would roughly take 60 seconds to execute and there is risk when it comes to moving the files or matching/renaming the file.  Each document took about 24 seconds to process using RPA (this includes 10 seconds of built in delays) without any errors.  We now have an accurate approach to execute this task for an unlimited number of documents at 2.5 times the speed of a person.
+
+Imagine if this task was one person's full time job and they were getting paid the federal minimum wage of $7.25.  That would mean they could process about 480 documents for $58 per day (this doesn't even take into account the cost of errors).  Now imagine if you had a team of x people performing this same task!
+
+| Process  | Documents | Time | Cost |
+| ------------- | ------------- | ------------- |
+| 1 Person  | 480  | 8 hours  | $58  |
+| 5 People  | 2,400  | 8 hours  | $290  |
+| 10 People  | 4,800  | 8 hours  | $580  |
+| 50 People  | 24,000  | 8 hours  | $2,900  |
+| 1 Bot  | 1,200  | 8 hours  | N/A  |
+| 1 Bot  | 3,600  | 24 hours  | N/A  |
+| 5 Bots  | 18,000  | 24 hours  | N/A  |
+| 10 Bots  | 36,000  | 24 hours  | N/A  |
+
+You can easily see the potential benefits of RPA for enterprises that have a lot of manual tasks being performed.  Here is an <a href="https://www.uipath.com/blog/rpa-and-the-roi-conundrum" target="_blank">interesting article</a> that goes over RPA and the ROI conundrum.  Feel free to send us an email at rpa@gstdev.com if you're interested in learning more about RPA.
 
 # Project Setup
 * Modify Word ribbon (add option to Export as PDF to review tab)
