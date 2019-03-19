@@ -21,13 +21,13 @@ We have been interested in RPA since early 2018 and spent some time with UiPath 
 * Add/Update Dependencies (Mail, Word, Excel, UIAutomation, System)
 ![Manage Packages](https://s3.amazonaws.com/gst-public-share/github/manage_packages.png)
 * Open project (ApproveConvertRename/project.json)
-* Double click on ApproveConvertRename.xaml (in left side naviation) to view the project
+* Double click on ApproveConvertRename.xaml (in left side navigation) to view the project
 ![View Project](https://s3.amazonaws.com/gst-public-share/github/view_project.png)
 * Double click on any elements to drill into nested sequences
 * Click on Activities tab (in left side navigation) to view all of the available elements
 * Click on Variables tab (in center window) to view all of the variables (can only see variables based on the scoping)
 ![Variables](https://s3.amazonaws.com/gst-public-share/github/variable_configuration.png)
-* Create necessary directories and update variables in order to succesfully run this sample project
+* Create necessary directories and update variables in order to successfully run this sample project
 
 | Variable  | Scope | Note |
 | ------------- | ------------- | ------------- |
@@ -42,7 +42,7 @@ We have been interested in RPA since early 2018 and spent some time with UiPath 
   * Approve all comments
     * Alt + r
     * a2l
-  * Set markup drow down to "No Markup" selection, just execute what's inside the parentheses of [k()] (i.e. down arrow or enter key)
+  * Set markup drop down to "No Markup" selection, just execute what's inside the parentheses of [k()] (i.e. down arrow or enter key)
     * Alt + r
     * td[k(down)][k(down)][k(enter)]
   * Export as PDF
@@ -54,4 +54,7 @@ We have been interested in RPA since early 2018 and spent some time with UiPath 
   * Close application
     * Alt + F4
   
-* Since the main workflow is "Approve, Convert, and Rename" and it exists in both the Try Catch and the Finally Retry Scope, I would recommend making necessary modifications in just the Try Catch and then copy/paste into the Finally Retry Scope.  I have this in place since I would occassionally receive unexpected exceptions.
+* Since the main workflow is "Approve, Convert, and Rename" and it exists in both the Try Catch and the Finally Retry Scope, I would recommend making necessary modifications in just the Try Catch and then copy/paste into the Finally Retry Scope.  I have this in place since I would occasionally receive unexpected exceptions.
+
+# Summary
+This project took roughly 9 hours to put together.  Manually executing this task for one document would roughly take 1 minute to execute and there is risk when it comes to moving the files or matching/renaming the file.  We now have an accurate approach to execute this task for an unlimited number of documents.  Imagine if this task was one person's full time job and they were getting paid the federal minimum wage of $7.25.  That would mean they could process about 480 documents for $58 per day.  Now imagine if you had a team of 5 people performing this same task!  You can easily see the potential benefits of RPA for enterprises that have a lot of manual tasks being performed.  Here is an <a href="https://www.uipath.com/blog/rpa-and-the-roi-conundrum" target="_blank">interesting article</a> that goes over RPA and the ROI conundrum.  Feel free to <a href = "mailto: rpa@gstdev.com">send us an email</a> if you're interested in learning more about RPA.
