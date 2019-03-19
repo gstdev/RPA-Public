@@ -38,7 +38,7 @@ We have been interested in RPA since early 2018 and spent some time with UiPath 
 | excelFile  | Rename Files  | Excel Spreadsheet for File Rename  |
 | renamedFileDirectory  | Cell Match  | Default Renamed Document Path  |
 
-* Verify all of your hotkeys match (set in Root Directory Loop scope)
+* Verify all of your Word hotkeys match (set in Root Directory Loop scope).  If yours are different, then you will need to modify the Root Directory Loop sequences so that they match your hotkeys.
   * Approve all comments
     * Alt + r
     * a2l
