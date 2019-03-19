@@ -16,7 +16,7 @@ This project took roughly 9 hours to put together.  Manually executing this task
 Imagine if this task was one person's full time job and they were getting paid the federal minimum wage of $7.25.  That would mean they could process about 480 documents for $58 per day (this doesn't even take into account the cost of errors).  Now imagine if you had a team of x people performing this same task!
 
 | Process  | Documents | Time | Cost |
-| ------------- | ------------- | ------------- |
+| ------------- | ------------- | ------------- | ------------- |
 | 1 Person  | 480  | 8 hours  | $58  |
 | 5 People  | 2,400  | 8 hours  | $290  |
 | 10 People  | 4,800  | 8 hours  | $580  |
