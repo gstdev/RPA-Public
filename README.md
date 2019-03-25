@@ -42,8 +42,8 @@ You can easily see the potential benefits of RPA for enterprises that have a lot
 * Double click on ApproveConvertRename.xaml (in left side navigation) to view the project
 ![View Project](https://s3.amazonaws.com/gst-public-share/github/view_project.png)
 * Double click on any elements to drill into nested sequences
-* Click on Activities tab (in left side navigation) to view all of the available elements
-* Click on Variables tab (in center window) to view all of the variables (can only see variables based on the scoping)
+* Click on Activities tab (in left side navigation) to view all of the available actions
+* Click on Variables tab (in center window - workflow designer) to view all of the variables (can only see variables based on the scoping)
 ![Variables](https://s3.amazonaws.com/gst-public-share/github/variable_configuration.png)
 * Create necessary directories and update variables in order to successfully run this sample project
 
